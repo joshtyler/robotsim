@@ -103,7 +103,7 @@ private:
 // The problem spec doesn't mention that whitespace lines can be safely ingored,
 // but the example input shows that they can!
 // Return true if we could get such a line, false if we could not
-[[nodiscard]] bool try_read_next_nonwhitepace_line(std::string &line)
+[[nodiscard]] bool try_read_next_nonwhitespace_line(std::string &line)
 {
 	do
 	{
@@ -121,9 +121,9 @@ private:
 	return false;
 }
 
-void read_next_nonwhitepace_line(std::string &line)
+void read_next_nonwhitespace_line(std::string &line)
 {
-	if(!try_read_next_nonwhitepace_line(line))
+	if(!try_read_next_nonwhitespace_line(line))
 	{
 		throw std::runtime_error("Expected input, but none was found");
 	}
@@ -136,18 +136,18 @@ int main(void)
 		std::string line;
 
 		// The first line contains our maximum grid size
-		read_next_nonwhitepace_line(line);
+		read_next_nonwhitespace_line(line);
 		const auto grid_max = parse_initial_coordinates(line);
 
 		// Following that we get two lines per robot
 		// The first is initial position
 		// Then comes commands
 		// Following this we print out final position
-		while(try_read_next_nonwhitepace_line(line))
+		while(try_read_next_nonwhitespace_line(line))
 		{
 			auto pos = parse_robot_position(line);
 			// Now the user provides a list of commands
-			read_next_nonwhitepace_line(line);
+			read_next_nonwhitespace_line(line);
 		}
 
 	} catch(std::runtime_error &e) {
