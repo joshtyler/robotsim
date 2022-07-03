@@ -1,0 +1,46 @@
+
+name: Build and test
+on: [push]
+jobs:
+  main_job:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+    - name: configure
+      run: cmake -DCMAKE_BUILD_TYPE=Release -B ${{runner.workspace}}/build
+    - name: build
+      shell: bash
+      run: cmake --build ${{runner.workspace}}/build/
+    - name: test
+      shell: bash
+      run: ./run_tests.sh ${{runner.workspace}}/build/robotsim test/
+    - name: "upload executable"
+      uses: actions/upload-artifact@v2
+      with:
+        name: executable-${{ matrix.os }}
+        path: ${{runner.workspace}}/build/robotsim
+# Getting it to build on windows has some compromises
+# MSVC ignores CMAKE_BUILD_TYPE so we can only get a debug build
+# Windows file separators are annoying, so we need a separate build step just for windows
+  windows_job:
+    runs-on: windows-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+    - name: configure
+      run: cmake -B '${{runner.workspace}}\build'
+    - name: build
+      shell: bash
+      run: cmake --build '${{runner.workspace}}\build'
+    - name: test
+      shell: bash
+      run: ./run_tests.sh '${{runner.workspace}}\build\Debug\robotsim.exe' test
+    - name: "upload executable"
+      uses: actions/upload-artifact@v2
+      with:
+        name: executable-windows-latest
+        path: '${{runner.workspace}}\build\Debug\robotsim.exe'
