@@ -17,7 +17,7 @@ Command char_to_command(char c);
 
 // Similar to the initial coordinates, the user provides robot position on one line
 // This fuction parses that format, and provides back our struct
-[[nodiscard]] Robot parse_robot_position(const std::string &s, const Coordinate grid_max);
+[[nodiscard]] Robot parse_robot_position(const std::string &s, const Coordinate grid_max, ScentTracker *scent);
 
 
 // Try and read the next line that isn't entirely whitespace

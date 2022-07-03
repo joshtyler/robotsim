@@ -14,13 +14,16 @@ int main(void)
 		read_next_nonwhitespace_line(line);
 		const auto grid_max = parse_initial_coordinates(line);
 
+		// Also keep track of which robots have fallen off the edge
+		ScentTracker scent(grid_max);
+
 		// Following that we get two lines per robot
 		// The first is initial position
 		// Then comes commands
 		// Following this we print out final position
 		while(try_read_next_nonwhitespace_line(line))
 		{
-			auto robot = parse_robot_position(line, grid_max);
+			auto robot = parse_robot_position(line, grid_max, &scent);
 
 			// Now the user provides a list of commands
 			read_next_nonwhitespace_line(line);

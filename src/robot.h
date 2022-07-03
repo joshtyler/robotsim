@@ -2,6 +2,7 @@
 #define ROBOT_H
 
 #include <stdexcept>
+#include <vector>
 
 // This stores the different possible orientations in a typesafe manner
 enum class Orientation
@@ -12,6 +13,7 @@ enum class Orientation
 	WEST
 };
 
+// Likewise command
 enum class Command
 {
 	ROTATE_LEFT,
@@ -38,10 +40,30 @@ struct Coordinate
 	bool is_inside(Coordinate other) const;
 };
 
+// Keep track of which robots have previously been lost and left their scent
+// Robots can only fall off the edge, so store this state in a vector of bool of the length of the perimeter
+// Carefully index this to store/retrieve whether a robot is lost
+// N.B. vector<bool> is likely to be size optimised in c++, so this will be only a few ints large
+class ScentTracker
+{
+public:
+	ScentTracker(Coordinate _grid_max);
+
+	inline bool is_scent_set(Coordinate c) const {return scent.at(get_scent_idx(c));};
+
+	inline void set_scent(Coordinate c) {scent.at(get_scent_idx(c)) = true;};
+
+private:
+	const Coordinate grid_max;
+	std::vector<bool> scent;
+	size_t get_scent_idx(Coordinate c) const;
+};
+
+// Our actual robot state
 struct Robot
 {
-	Robot(Coordinate _coordinate, Orientation _orientation, Coordinate _grid_max)
-	:coordinate(_coordinate), orientation(_orientation), grid_max(_grid_max)
+	Robot(Coordinate _coordinate, Orientation _orientation, Coordinate _grid_max, ScentTracker *_scent)
+	:coordinate(_coordinate), orientation(_orientation), grid_max(_grid_max), scent(_scent)
 	{
 		if(!grid_max.is_inside(coordinate))
 		{
@@ -55,8 +77,10 @@ struct Robot
 	Orientation orientation;
 	const Coordinate grid_max;
 	bool lost=false;
+	ScentTracker *scent;
 
 private:
 };
+
 
 #endif

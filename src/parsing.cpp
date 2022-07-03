@@ -56,7 +56,7 @@ Coordinate parse_initial_coordinates(const std::string &s)
 	return ret;
 }
 
-Robot parse_robot_position(const std::string &s, const Coordinate grid_max)
+Robot parse_robot_position(const std::string &s, const Coordinate grid_max, ScentTracker *scent)
 {
 	// This is slightly inefficient since we read a line, then immediately construct a temporary stringstream
 	// But this enforces the semantics that both coordinates are on one line in a simple way
@@ -72,7 +72,7 @@ Robot parse_robot_position(const std::string &s, const Coordinate grid_max)
 		throw std::runtime_error("Could not parse robot position");
 	}
 
-	const Robot ret(Coordinate(x,y),char_to_orientation(c), grid_max);
+	const Robot ret(Coordinate(x,y),char_to_orientation(c), grid_max, scent);
 	return ret;
 }
 
