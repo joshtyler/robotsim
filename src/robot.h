@@ -1,6 +1,8 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
+// This file takes care of the application logic to manage robot state
+
 #include <stdexcept>
 #include <vector>
 

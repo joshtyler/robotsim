@@ -14,7 +14,7 @@ int main(void)
 		read_next_nonwhitespace_line(line);
 		const auto grid_max = parse_initial_coordinates(line);
 
-		// Also keep track of which robots have fallen off the edge
+		// Keep track of which robots have fallen off the edge
 		ScentTracker scent(grid_max);
 
 		// Following that we get two lines per robot

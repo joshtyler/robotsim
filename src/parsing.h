@@ -1,5 +1,7 @@
 // Functions to parse user input into our program state
 
+// The philosophy for this file is to separate the input parsing from the application logic
+
 #ifndef PARSING_H
 #define PARSING_H
 
