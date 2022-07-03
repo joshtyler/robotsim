@@ -6,12 +6,6 @@
 // The constructor ensures that the proposed x and y values are in-range
 struct Coordinate
 {
-	Coordinate(const std::string &s)
-	{
-
-	}
-
-
 	Coordinate(int _x, int _y)
 	:x(_x), y(_y)
 	{
